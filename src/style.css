@@ -1,0 +1,16 @@
+.isFocusedLeaf {
+  background: yellow;
+}
+
+.node {
+  width: 200px;
+  height: 200px;
+}
+
+.flex {
+  display: flex;
+}
+
+.gap-2 {
+  gap: 8px;
+}
