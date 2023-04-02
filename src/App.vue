@@ -3,7 +3,7 @@ import FocusNode from "./components/FocusNode.vue";
 </script>
 
 <template>
-  <div class="flex gap-2">
+  <div class="flex gap-2 flex-wrap">
     <FocusRoot>
       <FocusNode class="node">Test</FocusNode>
       <FocusNode class="node">Test</FocusNode>
