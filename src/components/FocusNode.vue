@@ -5,6 +5,13 @@ import { FocusStore, Id, NodeDefinition, ProviderValue } from "../types";
 import nodeFromDefinition from "../utils/node-from-definition";
 import type { FocusNode } from "../types";
 
+withDefaults(
+  defineProps<{
+    elementType?: any; // string OR the actual object (vue objects are type any)
+  }>(),
+  { elementType: "div" }
+);
+
 const context = inject("FocusStore") as {
   store: FocusStore;
   focusDefinitionHierarchy: any;
@@ -133,5 +140,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div ref="elRef" :class="nodeRef.isFocused && 'isFocusedLeaf'"><slot /></div>
+  <component :is="elementType" ref="elRef" :class="nodeRef.isFocused && 'isFocusedLeaf'"
+    ><slot
+  /></component>
 </template>
