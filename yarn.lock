@@ -2716,7 +2716,7 @@
   "resolved" "https://registry.npmjs.org/systemjs/-/systemjs-6.14.1.tgz"
   "version" "6.14.1"
 
-"terser@^5.4.0":
+"terser@^5.16.8", "terser@^5.4.0":
   "integrity" "sha512-QI5g1E/ef7d+PsDifb+a6nnVgC4F22Bg6T0xrBrz6iloVB4PUkkunp6V8nzoOOZJIzjWVdAGqCdlKlhLq/TbIA=="
   "resolved" "https://registry.npmjs.org/terser/-/terser-5.16.8.tgz"
   "version" "5.16.8"
