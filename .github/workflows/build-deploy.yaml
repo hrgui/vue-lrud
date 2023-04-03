@@ -35,7 +35,7 @@ jobs:
 
       - name: ⚙️ Setup Pages
         if: success()
-        uses: actions/configure-pages@v1
+        uses: actions/configure-pages@v3
 
       - name: 📁 Upload artifact
         if: success()
@@ -68,4 +68,4 @@ jobs:
     steps:
       - name: 🚀 Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v2
