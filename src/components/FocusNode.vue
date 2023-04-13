@@ -1,15 +1,44 @@
 <script setup lang="ts">
-import { inject, onMounted, onUnmounted, ref } from "vue";
+import { inject, onMounted, onUnmounted, ref, provide } from "vue";
 import { createUniqueId } from "../focus-store";
 import { FocusStore, Id, NodeDefinition, ProviderValue } from "../types";
 import nodeFromDefinition from "../utils/node-from-definition";
 import type { FocusNode } from "../types";
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
+    orientation?: "horizontal" | "vertical";
+    focusId?: string;
     elementType?: any; // string OR the actual object (vue objects are type any)
+    wrapping?: boolean;
+    isGrid?: boolean;
+    isTrap?: boolean;
+    forgetTrapFocusHierarchy?: boolean;
+    defaultFocusColumn?: number;
+    defaultFocusRow?: number;
+    disabled?: boolean;
+    onMountAssignFocusTo?: string;
+    defaultFocusChild?: number;
+    isExiting?: boolean;
+    focusedClass?: string;
+    focusedLeafClass?: string;
+    disabledClass?: string;
+    activeClass?: string;
+    wrapGridHorizontal?: boolean;
+    wrapGridVertical?: boolean;
   }>(),
-  { elementType: "div" }
+  {
+    elementType: "div",
+    wrapping: false,
+    isGrid: false,
+    isTrap: false,
+    focusedClass: "isFocused",
+    focusedLeafClass: "isFocusedLeaf",
+    disabledClass: "focusDisabled",
+    activeClass: "isActive",
+    forgetTrapFocusHierarchy: false,
+    isExiting: false,
+  }
 );
 
 const context = inject("FocusStore") as {
@@ -18,36 +47,32 @@ const context = inject("FocusStore") as {
   focusNodesHierarchy: any;
 };
 const elRef = ref(null);
-const nodeId = `node-${createUniqueId()}`;
+const nodeId = props.focusId || `node-${createUniqueId()}`;
 const staticDefinition = createStaticDefinition();
 const nodeRef = ref(staticDefinition.initialNode);
 const nodeExistsInTree = ref(false);
 
 function createStaticDefinition() {
+  const defaultForgetFocusTrap = props.isTrap ? false : undefined;
+  const defaultOrientation = !props.isGrid ? undefined : "horizontal";
+
   const nodeDefinition: NodeDefinition = {
     elRef,
     focusId: nodeId,
-    orientation: "horizontal",
-    // orientation: orientation || defaultOrientation,
-    // wrapping: Boolean(wrapping),
-    wrapping: false,
-    // trap: Boolean(isTrap),
-    trap: false,
-    // wrapGridHorizontal: wrapGridHorizontalValue,
-    // wrapGridVertical: wrapGridVerticalValue,
-    wrapGridHorizontal: false,
-    wrapGridVertical: false,
-    // forgetTrapFocusHierarchy:
-    //   forgetTrapFocusHierarchy !== undefined ? forgetTrapFocusHierarchy : defaultForgetFocusTrap,
-    forgetTrapFocusHierarchy: undefined,
-
-    // navigationStyle: isGrid ? "grid" : "first-child",
-    navigationStyle: "first-child",
-
-    // defaultFocusColumn: defaultFocusColumn ?? 0,
-    // defaultFocusRow: defaultFocusRow ?? 0,
-    defaultFocusColumn: 0,
-    defaultFocusRow: 0,
+    orientation: props.orientation || defaultOrientation,
+    wrapping: props.wrapping,
+    trap: props.isTrap,
+    wrapGridHorizontal:
+      typeof props.wrapGridHorizontal === "boolean" ? props.wrapGridHorizontal : props.wrapping,
+    wrapGridVertical:
+      typeof props.wrapGridVertical === "boolean" ? props.wrapGridVertical : props.wrapping,
+    forgetTrapFocusHierarchy:
+      props.forgetTrapFocusHierarchy !== undefined
+        ? props.forgetTrapFocusHierarchy
+        : defaultForgetFocusTrap,
+    navigationStyle: props.isGrid ? "grid" : "first-child",
+    defaultFocusColumn: props.defaultFocusColumn ?? 0,
+    defaultFocusRow: props.defaultFocusRow ?? 0,
 
     // onKey: createCallbackWrapper("onKey"),
     // onArrow: createCallbackWrapper("onArrow"),
@@ -61,38 +86,45 @@ function createStaticDefinition() {
     // onMove: createCallbackWrapper("onMove"),
     // onGridMove: createCallbackWrapper("onGridMove"),
 
-    // initiallyDisabled: Boolean(disabled),
-    initiallyDisabled: false,
-
-    // onMountAssignFocusTo,
-    // defaultFocusChild,
-
-    // isExiting,
-
     // onFocused,
     // onBlurred,
+
+    initiallyDisabled: Boolean(props.disabled),
+
+    onMountAssignFocusTo: props.onMountAssignFocusTo,
+    defaultFocusChild: props.defaultFocusChild,
+
+    isExiting: props.isExiting,
   };
 
-  const { store, focusDefinitionHierarchy, focusNodesHierarchy } = context;
+  // const { store, focusDefinitionHierarchy, focusNodesHierarchy } = context;
 
-  const parentNode = focusNodesHierarchy[focusNodesHierarchy.length - 1];
+  // console.log('nodeId', nodeId, focusDefinitionHierarchy, focusNodesHierarchy);
+
+  console.log("nodeId", nodeId, context.focusDefinitionHierarchy, context.focusNodesHierarchy);
+
+  const parentNode = context.focusNodesHierarchy[context.focusNodesHierarchy.length - 1];
   const initialNode = nodeFromDefinition({
     nodeDefinition,
     parentNode,
   });
 
-  const newDefinitionHierarchy = focusDefinitionHierarchy.concat(nodeDefinition);
+  const newDefinitionHierarchy = context.focusDefinitionHierarchy.concat(nodeDefinition);
 
-  const newNodesHierarchy = focusNodesHierarchy.concat(initialNode);
+  const newNodesHierarchy = context.focusNodesHierarchy.concat(initialNode);
+
+  const newProviderValue = {
+    store: context.store,
+    focusDefinitionHierarchy: newDefinitionHierarchy,
+    focusNodesHierarchy: newNodesHierarchy,
+  };
+  // a focusnode is also another root
+  provide("FocusStore", newProviderValue);
 
   return {
     nodeDefinition,
     initialNode,
-    providerValue: {
-      store,
-      focusDefinitionHierarchy: newDefinitionHierarchy,
-      focusNodesHierarchy: newNodesHierarchy,
-    } as ProviderValue,
+    providerValue: newProviderValue,
   };
 }
 
@@ -110,7 +142,12 @@ function checkForUpdate({
 
   if (newNode && !newNode.isExiting) {
     // NOTE: this could check everything about the node, but if we do newNode !== currentNode.value, it re-renders too often
-    if (newNode.isFocused !== currentNode.value.isFocused) {
+    if (
+      newNode.isFocused !== currentNode.value.isFocused ||
+      newNode.isFocusedLeaf !== currentNode.value.isFocusedLeaf ||
+      newNode.active !== currentNode.value.active ||
+      newNode.disabled !== currentNode.value.disabled
+    ) {
       currentNode.value = newNode;
     }
   }
@@ -130,6 +167,12 @@ onMounted(() => {
     staticDefinition.providerValue.focusDefinitionHierarchy
   );
   nodeExistsInTree.value = true;
+
+  checkForUpdate({
+    focusStore: context.store,
+    id: nodeId,
+    currentNode: nodeRef,
+  });
 });
 
 onUnmounted(() => {
@@ -140,7 +183,15 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <component :is="elementType" ref="elRef" :class="nodeRef.isFocused && 'isFocusedLeaf'"
+  <component
+    :is="elementType"
+    ref="elRef"
+    :class="{
+      [props.focusedLeafClass]: nodeRef.isFocusedLeaf,
+      [props.focusedClass]: nodeRef.isFocused,
+      [props.disabledClass]: nodeRef.disabled,
+      [props.activeClass]: nodeRef.active,
+    }"
     ><slot
   /></component>
 </template>

@@ -3,62 +3,25 @@ import FocusNode from "./components/FocusNode.vue";
 </script>
 
 <template>
-  <div class="flex gap-2 flex-wrap">
+  <div>
     <FocusRoot>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
-      <FocusNode class="node">Test</FocusNode>
+      <FocusNode orientation="vertical">
+        <FocusNode class="flex gap-2 flex-wrap">
+          <FocusNode class="node">Test</FocusNode>
+          <FocusNode class="node">Test</FocusNode>
+          <FocusNode class="node">Test</FocusNode>
+          <FocusNode class="node">Test</FocusNode>
+          <FocusNode class="node">Test</FocusNode>
+        </FocusNode>
+
+        <FocusNode class="flex gap-2 flex-wrap">
+          <FocusNode class="node">Test</FocusNode>
+          <FocusNode class="node">Test</FocusNode>
+          <FocusNode class="node">Test</FocusNode>
+          <FocusNode class="node">Test</FocusNode>
+          <FocusNode class="node">Test</FocusNode>
+        </FocusNode>
+      </FocusNode>
     </FocusRoot>
   </div>
 </template>
