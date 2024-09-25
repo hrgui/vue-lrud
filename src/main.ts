@@ -1,4 +1,4 @@
-import "proxy-polyfill";
+import "./proxy-polyfill-2";
 import { createApp } from "vue";
 import App from "./App.vue";
 import FocusRoot from "./components/FocusRoot.vue";
