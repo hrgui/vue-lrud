@@ -17,6 +17,7 @@
     "@vitejs/plugin-legacy": "^4.0.2",
     "@vitejs/plugin-vue": "^4.1.0",
     "jsdom": "^21.1.1",
+    "proxy-polyfill": "^0.3.2",
     "terser": "^5.16.8",
     "typescript": "^4.9.3",
     "vite": "^4.2.0",
