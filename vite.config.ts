@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     vue(),
     legacy({
-      targets: ["defaults", "chrome > 47"],
+      targets: ["defaults", "chrome >= 47"],
     }),
   ],
   base: "/vue-lrud",
