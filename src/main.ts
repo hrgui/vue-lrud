@@ -1,4 +1,6 @@
-import "./proxy-polyfill-2";
+import "vue-reactivity-polyfill-getownpropertynames";
+import "vue-reactivity-polyfill";
+
 import { createApp } from "vue";
 import App from "./App.vue";
 import FocusRoot from "./components/FocusRoot.vue";

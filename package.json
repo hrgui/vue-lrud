@@ -16,12 +16,14 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@vitejs/plugin-legacy": "^4.0.2",
     "@vitejs/plugin-vue": "^4.1.0",
+    "core-js": "3.6.5",
     "jsdom": "^21.1.1",
     "proxy-polyfill": "^0.3.2",
     "terser": "^5.16.8",
     "typescript": "^4.9.3",
     "vite": "^4.2.0",
     "vitest": "^0.29.8",
+    "vue-reactivity-polyfill": "^0.1.2",
     "vue-tsc": "^1.2.0"
   }
 }
